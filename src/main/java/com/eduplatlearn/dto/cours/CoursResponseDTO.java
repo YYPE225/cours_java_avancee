@@ -1,9 +1,14 @@
 package com.eduplatlearn.dto.cours;
 
-public record CoursResponseDTO(Long id,
-                               String titre,
-                               String description,
-                               String niveau,
-                               boolean publie) {
+import java.time.LocalDateTime;
+
+public record CoursResponseDTO(
+        Long id,
+        String titre,
+        String description,
+        String niveau,
+        Boolean publie,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
 
 }

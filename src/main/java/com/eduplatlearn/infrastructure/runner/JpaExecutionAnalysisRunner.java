@@ -52,7 +52,7 @@ public class JpaExecutionAnalysisRunner implements CommandLineRunner {
         //supprimerModule(74L);
 //======================== RESSOURCES ===================================
         //afficherRessources();
-        //supprimerRessources(1L); //n'oubliez pas que pour supprimer une ressource , il faut supprimer la lecon d'abord .
+        //supprimerRessources(1L); //n'oubliez pas que pour supprimer une ressource, il faut supprimer la lecon d'abord .
 //++++++++++++++++++++++++ VIDEO ++++++++++++++++++++++++++++++++++++++++
         //creerRessourcesVideo();
         //modifierRessourcesVideo(1L,"http://tubidy.com",2500);

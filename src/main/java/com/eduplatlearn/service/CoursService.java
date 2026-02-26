@@ -6,12 +6,16 @@ import com.eduplatlearn.entity.Cours;
 import java.util.List;
 
 public interface CoursService {
-    List<CoursView> getAll();
-    CoursView getById(Long id);
 
-    CoursView create(CoursRequest request);
+    List<CoursResponseDTO> getAll();
 
-    CoursView update(Long id, CoursRequest request);
+    CoursResponseDTO getById(Long id);
+
+    CoursResponseDTO create(CoursCreateRequestDTO request);
+
+    CoursResponseDTO update(Long id, CoursUpdateRequestDTO request);
+
+    void delete(Long id);
 
 
 }

@@ -1,7 +1,6 @@
 package com.eduplatlearn.dto.cours;
 
-public record CoursRequest(Long id,
-                           String titre,
+public record CoursRequest(String titre,
                            String description,
                            String niveau,
                            boolean publie) {
