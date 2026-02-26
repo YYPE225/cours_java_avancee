@@ -1,0 +1,21 @@
+app:
+  seed:
+    enabled: true
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521
+    username: paul
+    password: paul1234
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    hibernate:
+      ddl-auto: update   # create-drop uniquement pour tests temporaires
+    show-sql: false
+    properties:
+      hibernate.format_sql: true
+    open-in-view: false
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
