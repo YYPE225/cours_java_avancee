@@ -18,23 +18,12 @@ public class Module {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incrémentation gérée par la BDD
     private Long id;
 
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
     @Column(nullable = false) // Champ obligatoire (NOT NULL en BDD)
     private String titre;
 
     @Column(length = 2000) // Limite la taille à 2000 caractères (VARCHAR(2000) en BDD)
     private String description;
 
-    public void setOrdre(Integer ordre) {
-        this.ordre = ordre;
-    }
 
     @Column(nullable = false) // Champ obligatoire (NOT NULL en BDD)
     private Integer ordre;
@@ -125,4 +114,17 @@ public class Module {
     public List<Lecon> getModules() {
         return lecons;
     }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public void setOrdre(Integer ordre) {
+        this.ordre = ordre;
+    }
+
 }

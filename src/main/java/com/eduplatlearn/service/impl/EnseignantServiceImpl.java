@@ -1,10 +1,14 @@
 package com.eduplatlearn.service.impl;
 
 
+
+import com.eduplatlearn.dto.cours.CoursShortDTO;
 import com.eduplatlearn.dto.enseignant.EnseignantCreateRequestDTO;
 import com.eduplatlearn.dto.enseignant.EnseignantResponseDTO;
 import com.eduplatlearn.dto.enseignant.EnseignantUpdateRequestDTO;
+import com.eduplatlearn.entity.Cours;
 import com.eduplatlearn.entity.Enseignant;
+import com.eduplatlearn.repository.CoursRepository;
 import com.eduplatlearn.repository.EnseignantRepository;
 import com.eduplatlearn.service.EnseignantService;
 import org.springframework.stereotype.Service;
@@ -17,9 +21,11 @@ import java.util.List;
 public class EnseignantServiceImpl implements EnseignantService {
 
     private final EnseignantRepository enseignantRepository;
+    private final CoursRepository coursRepository;
 
-    public EnseignantServiceImpl(EnseignantRepository enseignantRepository) {
+    public EnseignantServiceImpl(EnseignantRepository enseignantRepository, CoursRepository coursRepository) {
         this.enseignantRepository = enseignantRepository;
+        this.coursRepository = coursRepository;
     }
 
     @Override
@@ -43,13 +49,13 @@ public class EnseignantServiceImpl implements EnseignantService {
     public EnseignantResponseDTO create(EnseignantCreateRequestDTO request) {
         // Règles simples de robustesse (sans faire encore la slide Validation)
         if (request == null) {
-            throw new IllegalArgumentException("Request body is required");
+            throw new IllegalArgumentException("ATTENTION RIEN NE DOIT ETRE VIDE !!!!!!");
         }
         if (request.prenom() == null || request.prenom().isBlank()) {
-            throw new IllegalArgumentException("titre is required");
+            throw new IllegalArgumentException("prenom est obligatoire");
         }
         if (request.nom() == null || request.nom().isBlank()) {
-            throw new IllegalArgumentException("niveau is required");
+            throw new IllegalArgumentException("nom est obligatoire");
         }
 
         Enseignant enseignant = new Enseignant();
@@ -63,11 +69,11 @@ public class EnseignantServiceImpl implements EnseignantService {
     @Override
     public EnseignantResponseDTO update(Long id, EnseignantUpdateRequestDTO request) {
         if (request == null) {
-            throw new IllegalArgumentException("Request body is required");
+            throw new IllegalArgumentException("ATTENTION C'EST OBLIGATOIRE");
         }
 
         Enseignant enseignant = enseignantRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cours not found: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Enseignant introuvable: " + id));
 
         applyUpdate(enseignant, request);
 
@@ -80,7 +86,7 @@ public class EnseignantServiceImpl implements EnseignantService {
     @Override
     public void delete(Long id) {
         if (!enseignantRepository.existsById(id)) {
-            throw new IllegalArgumentException("Cours not found: " + id);
+            throw new IllegalArgumentException("Enseignant introuvable : " + id);
         }
         enseignantRepository.deleteById(id);
     }
@@ -90,12 +96,16 @@ public class EnseignantServiceImpl implements EnseignantService {
     // ----------------------
 
     private EnseignantResponseDTO toResponse(Enseignant enseignant) {
+        List<CoursShortDTO> coursShort = enseignant.getCours().stream()
+                .map(c -> new CoursShortDTO(c.getId(), c.getTitre()))
+                .toList();
         return new EnseignantResponseDTO(
                 enseignant.getId(),
                 enseignant.getPrenom(),
                 enseignant.getNom(),
                 enseignant.getBio(),
                 enseignant.getEmail(),
+                coursShort,
                 enseignant.getCreatedAt(),
                 enseignant.getUpdatedAt()
         );
@@ -106,6 +116,12 @@ public class EnseignantServiceImpl implements EnseignantService {
         enseignant.setPrenom(req.prenom());
         enseignant.setEmail(req.email());
         enseignant.setBio(req.bio());
+
+        if (req.cours() != null) {
+            List<Cours> coursList = coursRepository.findAllById(req.cours());
+            // Optionnel : vérifier si tous les IDs existent via .size()
+            enseignant.setCours(coursList);
+        }
     }
 
     private void applyUpdate(Enseignant enseignant, EnseignantUpdateRequestDTO req) {
@@ -115,5 +131,11 @@ public class EnseignantServiceImpl implements EnseignantService {
         enseignant.setPrenom(req.prenom());
         enseignant.setEmail(req.email());
         enseignant.setBio(req.bio());
+
+        if (req.cours() != null) {
+            List<Cours> coursList = coursRepository.findAllById(req.cours());
+            // Optionnel : vérifier si tous les IDs existent via .size()
+            enseignant.setCours(coursList);
+        }
     }
 }
